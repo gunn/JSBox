@@ -11,4 +11,23 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require jquery
+#= require d3
 #= require_tree .
+
+$ ->
+  svg = d3.select("body").append("svg")
+    .attr
+      width: 1000
+      height: 800
+    .style("background-color", "#eef")
+
+  g = svg.append("g")
+
+  window.b = g.append("rect")
+    .attr
+      x: 100
+      y: 250
+      width: 140
+      height: 200
+      rx: 10
+      ry: 10

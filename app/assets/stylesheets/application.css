@@ -11,3 +11,8 @@
  *= require_self
  *= require_tree .
  */
+
+rect {
+  fill: none;
+  stroke: #000;
+}
