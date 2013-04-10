@@ -11,3 +11,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 gem 'jquery-rails'
 gem 'd3_rails'
+
+group :development do
+  gem 'guard-livereload'
+end
