@@ -109,8 +109,6 @@ $ ->
       .call(addLabels)
       .call(addValues)
 
-  nextFrame = ->
+  setInterval ->
     drawObject base
-    # clearInterval id
-
-  id = setInterval nextFrame, 300
+  , 300
