@@ -16,9 +16,21 @@
 
 class Wrapper
   constructor: (@label, @object)->
+    @values = @collectValues()
 
   parents: ->
     # 
+
+  collectValues: ->
+    values = []
+    count = 0
+    for key, value of @object
+      if $.type(value) != "object" && $.type(value) != "array"
+        values.push
+          label: key
+          value: value
+          count: count++
+    values
 
 $ ->
   window.base =
@@ -51,24 +63,31 @@ $ ->
   drawObject = (base)->
     wrappers = buildTree base
 
-    addGroups = svg.selectAll("g").data(wrappers)
+    wrapperGroups = svg.selectAll("g").data(wrappers)
       .enter()
       .append("g")
         .attr
           transform: (d) -> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    addGroups.append("rect")
+    wrapperGroups.append("rect")
       .attr
         width: 140
         height: 200
         rx: 10
         ry: 10
 
-    addGroups.append("text")
+    wrapperGroups.append("text")
       .text((d)-> d.label)
       .attr
         x: 10
         y: 20
+
+    wrapperGroups.selectAll("text.value").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> d.value)
+        .attr
+          x: 10
+          y: (d)-> 50 + d.count * 20
 
   nextFrame = ->
     drawObject base
