@@ -14,6 +14,12 @@
 #= require d3
 #= require_tree .
 
+class Wrapper
+  constructor: (@label, @object)->
+
+  parents: ->
+    # 
+
 $ ->
   window.base =
     start:
@@ -33,23 +39,19 @@ $ ->
   maxItems   = 10
   itemsCount = 0
 
-  window.objects = []
-
-  buildTree = (base)->
+  buildTree = (base, wrappers=[])->
     for key, value of base
       return if itemsCount++ >= maxItems
       if $.type(value) == "object" || $.type(value) == "array"
-        objects.push
-          key: key
-          value: value
-          id: itemsCount
+        wrappers.push new Wrapper(key, value)
 
-        buildTree(value)
+        buildTree(value, wrappers)
+    wrappers
 
   drawObject = (base)->
-    buildTree base
+    wrappers = buildTree base
 
-    addGroups = svg.selectAll("g").data(objects)
+    addGroups = svg.selectAll("g").data(wrappers)
       .enter()
       .append("g")
         .attr
@@ -63,7 +65,7 @@ $ ->
         ry: 10
 
     addGroups.append("text")
-      .text((d)-> d.key)
+      .text((d)-> d.label)
       .attr
         x: 10
         y: 20
