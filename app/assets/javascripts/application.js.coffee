@@ -101,16 +101,13 @@ $ ->
         x: 10
         y: 20
 
-    wrapperGroupsAppend.call addLabels
+    wrapperGroupsAppend
+      .call(addLabels)
+      .call(addValues)
 
-    wrapperGroupsAppend.call addValues
-
-
-    wrapperGroups = svg.selectAll("g").data(wrappers)
-
-    wrapperGroups.call addValues
-
-    wrapperGroups.call addLabels
+    svg.selectAll("g").data(wrappers)
+      .call(addLabels)
+      .call(addValues)
 
   nextFrame = ->
     drawObject base
