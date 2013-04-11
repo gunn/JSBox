@@ -61,6 +61,24 @@ $ ->
         buildTree(value, wrappers)
     wrappers
 
+  addLabels = (selector)->
+    selector.selectAll("text.label").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> d.label)
+        .attr
+          class: "label"
+          x: 10
+          y: (d)-> 50 + d.count * 15
+
+  addValues = (selector)->
+    selector.selectAll("text.value").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> JSON.stringify d.value)
+        .attr
+          class: "value"
+          x: 60
+          y: (d)-> 50 + d.count * 15
+
   drawObject = (base)->
     wrappers = buildTree base
 
@@ -83,40 +101,16 @@ $ ->
         x: 10
         y: 20
 
-    wrapperGroupsAppend.selectAll("text.value").data((d)-> d.values)
-      .enter().append("text")
-        .text((d)-> JSON.stringify d.value)
-        .attr
-          class: "value"
-          x: 60
-          y: (d)-> 50 + d.count * 15
+    wrapperGroupsAppend.call addLabels
 
-    wrapperGroupsAppend.selectAll("text.label").data((d)-> d.values)
-      .enter().append("text")
-        .text((d)-> d.label)
-        .attr
-          class: "label"
-          x: 10
-          y: (d)-> 50 + d.count * 15
+    wrapperGroupsAppend.call addValues
 
 
     wrapperGroups = svg.selectAll("g").data(wrappers)
 
-    wrapperGroups.selectAll("text.value").data((d)-> d.values)
-      .enter().append("text")
-        .text((d)-> JSON.stringify d.value)
-        .attr
-          class: "value"
-          x: 60
-          y: (d)-> 50 + d.count * 15
+    wrapperGroups.call addValues
 
-    wrapperGroups.selectAll("text.label").data((d)-> d.values)
-      .enter().append("text")
-        .text((d)-> d.label)
-        .attr
-          class: "label"
-          x: 10
-          y: (d)-> 50 + d.count * 15
+    wrapperGroups.call addLabels
 
   nextFrame = ->
     drawObject base
