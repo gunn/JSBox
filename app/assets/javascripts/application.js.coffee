@@ -84,10 +84,19 @@ $ ->
 
     wrapperGroups.selectAll("text.value").data((d)-> d.values)
       .enter().append("text")
-        .text((d)-> d.value)
+        .text((d)-> JSON.stringify d.value)
         .attr
+          class: "value"
+          x: 60
+          y: (d)-> 50 + d.count * 15
+
+    wrapperGroups.selectAll("text.label").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> d.label)
+        .attr
+          class: "label"
           x: 10
-          y: (d)-> 50 + d.count * 20
+          y: (d)-> 50 + d.count * 15
 
   nextFrame = ->
     drawObject base

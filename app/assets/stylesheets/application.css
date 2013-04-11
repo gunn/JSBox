@@ -20,3 +20,11 @@ rect {
 text {
   font-family: Helvetica;
 }
+
+text.value, text.label {
+  font-size: 11px;
+}
+
+text.label {
+  font-weight: bold;
+}
