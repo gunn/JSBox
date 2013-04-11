@@ -16,3 +16,7 @@ rect {
   fill: none;
   stroke: #000;
 }
+
+text {
+  font-family: Helvetica;
+}

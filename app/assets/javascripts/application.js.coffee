@@ -15,19 +15,61 @@
 #= require_tree .
 
 $ ->
+  window.base =
+    start:
+      luckyNumber: 7
+      friend:
+        name: "Simon"
+        age: 22
+
+      activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
+
   svg = d3.select("body").append("svg")
     .attr
       width: 1000
       height: 800
     .style("background-color", "#eef")
 
-  g = svg.append("g")
+  maxItems   = 10
+  itemsCount = 0
 
-  window.b = g.append("rect")
-    .attr
-      x: 100
-      y: 250
-      width: 140
-      height: 200
-      rx: 10
-      ry: 10
+  window.objects = []
+
+  buildTree = (base)->
+    for key, value of base
+      return if itemsCount++ >= maxItems
+      if $.type(value) == "object" || $.type(value) == "array"
+        objects.push
+          key: key
+          value: value
+          id: itemsCount
+
+        buildTree(value)
+
+  drawObject = (base)->
+    buildTree base
+
+    addGroups = svg.selectAll("g").data(objects)
+      .enter()
+      .append("g")
+        .attr
+          transform: (d) -> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
+
+    addGroups.append("rect")
+      .attr
+        width: 140
+        height: 200
+        rx: 10
+        ry: 10
+
+    addGroups.append("text")
+      .text((d)-> d.key)
+      .attr
+        x: 10
+        y: 20
+
+  nextFrame = ->
+    drawObject base
+    clearInterval id
+
+  id = setInterval nextFrame, 300
