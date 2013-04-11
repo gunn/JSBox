@@ -15,7 +15,8 @@
 #= require_tree .
 
 class Wrapper
-  constructor: (@label, @object)->
+  constructor: (@object)->
+    @label = $.type(@object)
     @values = @collectValues()
 
   parents: ->
@@ -53,9 +54,9 @@ $ ->
 
   buildTree = (base, wrappers=[])->
     for key, value of base
-      return if itemsCount++ >= maxItems
+      return wrappers if wrappers.length >= maxItems
       if $.type(value) == "object" || $.type(value) == "array"
-        wrappers.push new Wrapper(key, value)
+        wrappers.push new Wrapper(value)
 
         buildTree(value, wrappers)
     wrappers
@@ -63,24 +64,43 @@ $ ->
   drawObject = (base)->
     wrappers = buildTree base
 
-    wrapperGroups = svg.selectAll("g").data(wrappers)
+    wrapperGroupsAppend = svg.selectAll("g").data(wrappers)
       .enter()
       .append("g")
         .attr
           transform: (d) -> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    wrapperGroups.append("rect")
+    wrapperGroupsAppend.append("rect")
       .attr
         width: 140
         height: 200
         rx: 10
         ry: 10
 
-    wrapperGroups.append("text")
+    wrapperGroupsAppend.append("text")
       .text((d)-> d.label)
       .attr
         x: 10
         y: 20
+
+    wrapperGroupsAppend.selectAll("text.value").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> JSON.stringify d.value)
+        .attr
+          class: "value"
+          x: 60
+          y: (d)-> 50 + d.count * 15
+
+    wrapperGroupsAppend.selectAll("text.label").data((d)-> d.values)
+      .enter().append("text")
+        .text((d)-> d.label)
+        .attr
+          class: "label"
+          x: 10
+          y: (d)-> 50 + d.count * 15
+
+
+    wrapperGroups = svg.selectAll("g").data(wrappers)
 
     wrapperGroups.selectAll("text.value").data((d)-> d.values)
       .enter().append("text")
@@ -100,6 +120,6 @@ $ ->
 
   nextFrame = ->
     drawObject base
-    clearInterval id
+    # clearInterval id
 
   id = setInterval nextFrame, 300
