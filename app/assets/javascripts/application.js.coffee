@@ -82,10 +82,11 @@ $ ->
   drawObject = (base)->
     wrappers = buildTree base
 
-    wrapperGroupsAppend = svg.selectAll("g").data(wrappers)
+    wrapperGroupsAppend = svg.selectAll("g.wrapper").data(wrappers)
       .enter()
       .append("g")
         .attr
+          class: "wrapper"
           transform: (d) -> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
     wrapperGroupsAppend.append("rect")
@@ -101,7 +102,11 @@ $ ->
         x: 10
         y: 20
 
-    svg.selectAll("g").data(wrappers)
+    wrapperGroupsAppend.append("g")
+      .attr
+        class: "values"
+
+    svg.selectAll("g.values").data(wrappers)
       .call(addLabels)
       .call(addValues)
 
