@@ -42,7 +42,7 @@ d3.selection.enter::append = d3.selection::append = (selector)->
 $ ->
   window.base =
     start:
-      luckyNumber: 7
+      n: 7
       friend:
         name: "Simon"
         age: 22
@@ -58,6 +58,26 @@ $ ->
   maxItems   = 10
   itemsCount = 0
 
+  addLines = (selector)->
+    lines = selector.selectAll("g.line").data((d)-> d.values)
+
+    linesAppend = lines.enter().append("g.line")
+
+    linesAppend.append("text.label")
+    linesAppend.append("text.value")
+
+    lines.selectAll("text.label")
+      .text((d)-> d.label)
+        .attr
+          x: 10
+          y: (d)-> 50 + d.count * 15
+
+    lines.selectAll("text.value")
+      .text((d)-> JSON.stringify d.value)
+        .attr
+          x: 60
+          y: (d)-> 50 + d.count * 15
+
   buildTree = (base, wrappers=[])->
     for key, value of base
       return wrappers if wrappers.length >= maxItems
@@ -66,22 +86,6 @@ $ ->
 
         buildTree(value, wrappers)
     wrappers
-
-  addLabels = (selector)->
-    selector.selectAll("text.label").data((d)-> d.values)
-      .enter().append("text.label")
-        .text((d)-> d.label)
-        .attr
-          x: 10
-          y: (d)-> 50 + d.count * 15
-
-  addValues = (selector)->
-    selector.selectAll("text.value").data((d)-> d.values)
-      .enter().append("text.value")
-        .text((d)-> JSON.stringify d.value)
-        .attr
-          x: 60
-          y: (d)-> 50 + d.count * 15
 
   drawObject = (base)->
     wrappers = buildTree base
@@ -108,8 +112,7 @@ $ ->
     wrapperGroupsAppend.append("g.values")
 
     svg.selectAll("g.values").data(wrappers)
-      .call(addLabels)
-      .call(addValues)
+      .call(addLines)
 
   setInterval ->
     drawObject base
