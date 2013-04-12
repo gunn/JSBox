@@ -33,6 +33,12 @@ class Wrapper
           count: count++
     values
 
+d3.selection.enter::bareAppend = d3.selection::bareAppend = d3.selection::append
+d3.selection.enter::append = d3.selection::append = (selector)->
+  [name, classes...] = selector.split(".")
+
+  @bareAppend(name).attr("class", classes.join(" "))
+
 $ ->
   window.base =
     start:
@@ -63,19 +69,17 @@ $ ->
 
   addLabels = (selector)->
     selector.selectAll("text.label").data((d)-> d.values)
-      .enter().append("text")
+      .enter().append("text.label")
         .text((d)-> d.label)
         .attr
-          class: "label"
           x: 10
           y: (d)-> 50 + d.count * 15
 
   addValues = (selector)->
     selector.selectAll("text.value").data((d)-> d.values)
-      .enter().append("text")
+      .enter().append("text.value")
         .text((d)-> JSON.stringify d.value)
         .attr
-          class: "value"
           x: 60
           y: (d)-> 50 + d.count * 15
 
@@ -84,10 +88,9 @@ $ ->
 
     wrapperGroupsAppend = svg.selectAll("g.wrapper").data(wrappers)
       .enter()
-      .append("g")
+      .append("g.wrapper")
         .attr
-          class: "wrapper"
-          transform: (d) -> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
+          transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
     wrapperGroupsAppend.append("rect")
       .attr
@@ -102,9 +105,7 @@ $ ->
         x: 10
         y: 20
 
-    wrapperGroupsAppend.append("g")
-      .attr
-        class: "values"
+    wrapperGroupsAppend.append("g.values")
 
     svg.selectAll("g.values").data(wrappers)
       .call(addLabels)
