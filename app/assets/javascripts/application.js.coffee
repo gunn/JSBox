@@ -68,15 +68,15 @@ $ ->
 
     lines.selectAll("text.label")
       .text((d)-> d.label)
-        .attr
-          x: 10
-          y: (d)-> 50 + d.count * 15
+      .attr
+        x: 10
+        y: (d)-> 50 + d.count * 15
 
     lines.selectAll("text.value")
       .text((d)-> JSON.stringify d.value)
-        .attr
-          x: 60
-          y: (d)-> 50 + d.count * 15
+      .attr
+        x: 60
+        y: (d)-> 50 + d.count * 15
 
   buildTree = (base, wrappers=[])->
     for key, value of base
