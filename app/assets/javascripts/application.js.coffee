@@ -42,7 +42,7 @@ d3.selection.enter::append = d3.selection::append = (selector)->
 $ ->
   window.base =
     start:
-      n: 7
+      n: 8
       friend:
         name: "Simon"
         age: 22
@@ -59,7 +59,7 @@ $ ->
   itemsCount = 0
 
   addLines = (selector)->
-    lines = selector.selectAll("g.line").data((d)-> d.values)
+    lines = selector.selectAll("g.line").data(((d)-> d.values), (d)-> d.value)
 
     linesAppend = lines.enter().append("g.line")
 
@@ -73,10 +73,12 @@ $ ->
         y: (d)-> 50 + d.count * 15
 
     lines.selectAll("text.value")
-      .text((d)-> JSON.stringify d.value)
+      .text((d)-> JSON.stringify d.value )
       .attr
         x: 60
         y: (d)-> 50 + d.count * 15
+
+    lines.exit().remove()
 
   buildTree = (base, wrappers=[])->
     for key, value of base
@@ -88,7 +90,7 @@ $ ->
     wrappers
 
   drawObject = (base)->
-    wrappers = buildTree base
+    window.wrappers = buildTree base
 
     wrapperGroupsAppend = svg.selectAll("g.wrapper").data(wrappers)
       .enter()
