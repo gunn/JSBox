@@ -17,12 +17,11 @@
 class Wrapper
   constructor: (@object)->
     @label = $.type(@object)
-    @values = @collectValues()
 
   parents: ->
     # 
 
-  collectValues: ->
+  values: ->
     values = []
     count = 0
     for key, value of @object
@@ -59,7 +58,7 @@ $ ->
   itemsCount = 0
 
   addLines = (selector)->
-    lines = selector.selectAll("g.line").data(((d)-> d.values), (d)-> d.value)
+    lines = selector.selectAll("g.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])
 
     linesAppend = lines.enter().append("g.line")
 
