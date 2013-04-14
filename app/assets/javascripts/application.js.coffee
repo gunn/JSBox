@@ -90,30 +90,31 @@ $ ->
 
   drawObject = (base)->
     window.wrappers = buildTree base
+    wraps = svg.selectAll("g.wrapper").data(wrappers)
 
-    wrapperGroupsAppend = svg.selectAll("g.wrapper").data(wrappers)
-      .enter()
+    wrapsAppend = wraps.enter()
       .append("g.wrapper")
         .attr
           transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    wrapperGroupsAppend.append("rect")
+    wrapsAppend.append("rect")
       .attr
         width: 140
         height: 200
         rx: 10
         ry: 10
 
-    wrapperGroupsAppend.append("text")
+    wrapsAppend.append("text")
       .text((d)-> d.label)
       .attr
         x: 10
         y: 20
 
-    wrapperGroupsAppend.append("g.values")
+    wrapsAppend.append("g.values")
 
-    svg.selectAll("g.values").data(wrappers)
-      .call(addLines)
+    wraps.call(addLines)
+
+    wraps.exit().remove()
 
   setInterval ->
     drawObject base
