@@ -15,3 +15,8 @@ gem 'd3_rails'
 group :development do
   gem 'guard-livereload'
 end
+
+group :development, :test do
+  gem 'jasminerice', github: 'bradphelan/jasminerice'
+  gem 'guard-jasmine'
+end
