@@ -7,6 +7,7 @@ class window.Dict
     @delete key
     @keys.push key
     @values.push value
+    value
 
   get: (key)->
     @values[@keys.indexOf(key)]

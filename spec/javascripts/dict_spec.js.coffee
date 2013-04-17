@@ -43,3 +43,8 @@ describe "Dict", ->
 
       expect(d.get(6)   ).toEqual 2
       expect(d.get(true)).toEqual 2
+
+    it "returns the value", ->
+      array = [1, 2, 3]
+      expect(d.set(5, array)).toEqual array
+      expect(d.set(true,  7)).toEqual 7
