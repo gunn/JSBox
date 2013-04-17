@@ -17,6 +17,7 @@
 class Wrapper
   constructor: (@object)->
     @label = $.type(@object)
+    @id = Math.random()
 
   parents: ->
     # 
@@ -39,7 +40,12 @@ d3.selection.enter::append = d3.selection::append = (selector)->
   @bareAppend(name).attr("class", classes.join(" "))
 
 $ ->
-  window.base =
+  window.JSBox =
+    wrappers: new Dict()
+    maxItems: 10
+    usedObjects: []
+
+  JSBox.base =
     start:
       n: 8
       friend:
@@ -53,9 +59,6 @@ $ ->
       width: 1000
       height: 800
     .style("background-color", "#eef")
-
-  maxItems   = 10
-  itemsCount = 0
 
   addLines = (selector)->
     lines = selector.selectAll("g.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])
@@ -79,18 +82,26 @@ $ ->
 
     lines.exit().remove()
 
-  buildTree = (base, wrappers=[])->
-    for key, value of base
-      return wrappers if wrappers.length >= maxItems
-      if $.type(value) == "object" || $.type(value) == "array"
-        wrappers.push new Wrapper(value)
+  buildWrappersTree = (base)->
+    for key, object of base
+      return if JSBox.wrappers.values.length >= JSBox.maxItems
+      if $.type(object) == "object" || $.type(object) == "array"
+        if !JSBox.wrappers.has(object)
+          JSBox.wrappers.set object, new Wrapper(object)
 
-        buildTree(value, wrappers)
-    wrappers
+        JSBox.usedObjects.push(object)
+        buildWrappersTree(object)
 
   drawObject = (base)->
-    window.wrappers = buildTree base
-    wraps = svg.selectAll("g.wrapper").data(wrappers)
+    JSBox.usedObjects = []
+    buildWrappersTree base
+
+    for object in JSBox.wrappers.keys
+      if JSBox.usedObjects.indexOf(object) == -1
+        JSBox.wrappers.delete object
+
+
+    wraps = svg.selectAll("g.wrapper").data(JSBox.wrappers.values, (d)-> d.id)
 
     wrapsAppend = wraps.enter()
       .append("g.wrapper")
@@ -117,5 +128,5 @@ $ ->
     wraps.exit().remove()
 
   setInterval ->
-    drawObject base
+    drawObject JSBox.base
   , 300
