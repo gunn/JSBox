@@ -2,10 +2,10 @@
 d = null
 
 describe "Dict", ->
-  describe "set", ->
-    beforeEach ->
-      d = new Dict
+  beforeEach ->
+    d = new Dict
 
+  describe "set", ->
     it "works with keys of generic types", ->
       d.set 1,         "number"
       d.set false,     "boolean"
@@ -46,5 +46,31 @@ describe "Dict", ->
 
     it "returns the value", ->
       array = [1, 2, 3]
+
       expect(d.set(5, array)).toEqual array
       expect(d.set(true,  7)).toEqual 7
+
+  describe "set", ->
+    it "returns undefined if item does not exist", ->
+      expect(d.get("key")).toEqual undefined
+
+  describe "has", ->
+    it "returns true if the item exists", ->
+      d.set "key", null
+
+      expect(d.has("key")).toEqual true
+
+    it "returns false if the item does not exist", ->
+      expect(d.has("key")).toEqual false
+
+  describe "delete", ->
+    it "removes the item", ->
+      d.set    "key", 55
+      d.delete "key"
+
+      expect(d.has("key")).toEqual false
+
+    it "returns the value", ->
+      d.set    "key", 55
+
+      expect(d.delete "key").toEqual 55
