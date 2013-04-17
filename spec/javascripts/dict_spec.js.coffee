@@ -34,4 +34,12 @@ describe "Dict", ->
       expect( d.get populatedArray  ).toEqual "populated array"
       expect( d.get emptyObject     ).toEqual "empty object"
       expect( d.get populatedObject ).toEqual "populated object"
-    
+
+    it "overwrites if there is a clash", ->
+      d.set 6, 1
+      d.set 6, 2
+      d.set true, 1
+      d.set true, 2
+
+      expect(d.get(6)   ).toEqual 2
+      expect(d.get(true)).toEqual 2
