@@ -99,8 +99,9 @@ $ ->
         .attr
           transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    wrapsAppend.append("h3")
-      .text((d)-> d.label)
+    wrapsAppend.append("tr.title").append("th")
+      .append("h3")
+        .text((d)-> d.label)
 
     wrapsAppend
       .style("opacity", 0)
