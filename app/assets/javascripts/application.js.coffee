@@ -101,7 +101,7 @@ $ ->
         JSBox.wrappers.delete object
 
 
-    wraps = svg.selectAll("g.wrapper").data(JSBox.wrappers.values, (d)-> d.id)
+    wraps = svg.selectAll("g.wrapper:not(.exiting)").data(JSBox.wrappers.values, (d)-> d.id)
 
     wrapsAppend = wraps.enter()
       .append("g.wrapper")
@@ -122,10 +122,20 @@ $ ->
         y: 20
 
     wrapsAppend.append("g.values")
+    wrapsAppend
+      .style("opacity", 0)
+      .transition()
+        .duration(150)
+        .style("opacity", 1)
 
     wraps.call(addLines)
 
-    wraps.exit().remove()
+    wraps.exit()
+      .attr("class", "exiting")
+      .transition()
+        .duration(150)
+        .style("opacity", 0)
+      .remove()
 
   setInterval ->
     drawObject JSBox.base
