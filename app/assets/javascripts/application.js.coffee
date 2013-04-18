@@ -54,7 +54,7 @@ $ ->
 
       activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
-  stage = d3.select("body").append("div")
+  stage = d3.select("body").append("div.stage")
     .style("background-color", "#eef")
 
   addLines = (selector)->

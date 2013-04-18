@@ -12,19 +12,14 @@
  *= require_tree .
  */
 
-rect {
-  fill: none;
-  stroke: #000;
-}
-
-text {
+.stage {
   font-family: Helvetica;
 }
 
-text.value, text.label {
-  font-size: 11px;
+td {
+  font-size: 13px;
 }
 
-text.label {
+td.label {
   font-weight: bold;
 }
