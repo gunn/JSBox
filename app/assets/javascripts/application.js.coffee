@@ -54,31 +54,22 @@ $ ->
 
       activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
-  svg = d3.select("body").append("svg")
-    .attr
-      width: 1000
-      height: 800
+  stage = d3.select("body").append("div")
     .style("background-color", "#eef")
 
   addLines = (selector)->
-    lines = selector.selectAll("g.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])
+    lines = selector.selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])
 
-    linesAppend = lines.enter().append("g.line")
+    linesAppend = lines.enter().append("tr.line")
 
-    linesAppend.append("text.label")
-    linesAppend.append("text.value")
+    linesAppend.append("td.label")
+    linesAppend.append("td.value")
 
-    lines.selectAll("text.label")
+    lines.selectAll("td.label")
       .text((d)-> d.label)
-      .attr
-        x: 10
-        y: (d)-> 50 + d.count * 15
 
-    lines.selectAll("text.value")
+    lines.selectAll("td.value")
       .text((d)-> JSON.stringify d.value )
-      .attr
-        x: 60
-        y: (d)-> 50 + d.count * 15
 
     lines.exit().remove()
 
@@ -101,27 +92,16 @@ $ ->
         JSBox.wrappers.delete object
 
 
-    wraps = svg.selectAll("g.wrapper:not(.exiting)").data(JSBox.wrappers.values, (d)-> d.id)
+    wraps = stage.selectAll("table.wrapper:not(.exiting)").data(JSBox.wrappers.values, (d)-> d.id)
 
     wrapsAppend = wraps.enter()
-      .append("g.wrapper")
+      .append("table.wrapper")
         .attr
           transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    wrapsAppend.append("rect")
-      .attr
-        width: 140
-        height: 200
-        rx: 10
-        ry: 10
-
-    wrapsAppend.append("text")
+    wrapsAppend.append("h3")
       .text((d)-> d.label)
-      .attr
-        x: 10
-        y: 20
 
-    wrapsAppend.append("g.values")
     wrapsAppend
       .style("opacity", 0)
       .transition()
