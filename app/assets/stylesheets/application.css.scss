@@ -9,26 +9,43 @@
     margin: 5px;
     padding: 2px 5px 5px 5px;
 
-    border-spacing: 0;
-
     border-radius: 5px;
-    border: 1px solid #000;
+    //border: 1px solid #000;
     background-color: #fff;
+
+    border-collapse: collapse;
+
+    box-shadow: 2px 2px 3px #999;
+
+    min-width: 170px;
   }
 
   tr.title {
     h3 {
       margin: 0 0;
     }
-
-    border: 1px solid #000;
   }
 
   td {
     font-size: 13px;
+    border-left: 1px solid #ddd;
+
+    padding: 3px 3px 3px 5px;
+
+    border-top: 1px solid #ddd;
+
+    background-color: #fef;
+
+    &:first-child {
+      border-left: 0;
+    }
   }
 
   td.label {
     font-weight: bold;
+
+    &:after {
+      content: ":";
+    }
   }
 }
