@@ -55,7 +55,6 @@ $ ->
       activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
   stage = d3.select("body").append("div.stage")
-    .style("background-color", "#eef")
 
   addLines = (selector)->
     lines = selector.selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])

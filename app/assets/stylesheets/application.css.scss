@@ -3,12 +3,32 @@
 
 .stage {
   font-family: Helvetica;
-}
+  background-color: #eef;
 
-td {
-  font-size: 13px;
-}
+  table {
+    margin: 5px;
+    padding: 2px 5px 5px 5px;
 
-td.label {
-  font-weight: bold;
+    border-spacing: 0;
+
+    border-radius: 5px;
+    border: 1px solid #000;
+    background-color: #fff;
+  }
+
+  tr.title {
+    h3 {
+      margin: 0 0;
+    }
+
+    border: 1px solid #000;
+  }
+
+  td {
+    font-size: 13px;
+  }
+
+  td.label {
+    font-weight: bold;
+  }
 }
