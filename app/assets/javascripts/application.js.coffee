@@ -100,9 +100,10 @@ $ ->
         .attr
           transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
 
-    wrapsAppend.append("tr.title").append("th")
-      .append("h3")
-        .text((d)-> d.label)
+    header = wrapsAppend.append("thead").append("tr.title").append("th")
+    header.attr("colspan", 2)
+    header.append("h3")
+      .text((d)-> d.label)
 
     wrapsAppend
       .style("opacity", 0)
@@ -110,7 +111,10 @@ $ ->
         .duration(150)
         .style("opacity", 1)
 
-    wraps.call(addLines)
+    wrapsAppend.append("tbody")
+
+    wraps.select("tbody")
+      .call(addLines)
 
     wraps.exit()
       .attr("class", "exiting")
