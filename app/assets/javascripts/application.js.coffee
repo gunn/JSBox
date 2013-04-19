@@ -97,8 +97,9 @@ $ ->
 
     wrapsAppend = wraps.enter()
       .append("table.wrapper")
-        .attr
-          transform: (d)-> "translate(#{[Math.random()*900, Math.random()*600].join(' ')})"
+        .style
+          left: -> Math.random()*900+"px"
+          top:  -> Math.random()*600+"px"
 
     header = wrapsAppend.append("thead").append("tr.title").append("th")
     header.attr("colspan", 2)

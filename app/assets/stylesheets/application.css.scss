@@ -1,15 +1,21 @@
 //= require_self
 //= require_tree .
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
 .stage {
   font-family: Helvetica;
   background-color: #eef;
 
-  table {
-    min-width: 170px;
-    border-collapse: collapse;
+  min-height: 100%;
 
-    margin: 15px;
+  table {
+    position: fixed;
+    min-width: 170px;
+
+    border-collapse: collapse;
 
     border-radius: 5px;
     box-shadow: 2px 2px 3px #999;
