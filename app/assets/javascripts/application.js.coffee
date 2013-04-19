@@ -24,13 +24,11 @@ class Wrapper
 
   values: ->
     values = []
-    count = 0
     for key, value of @object
       if $.type(value) != "object" && $.type(value) != "array"
         values.push
           label: key
           value: value
-          count: count++
     values
 
 d3.selection.enter::bareAppend = d3.selection::bareAppend = d3.selection::append
