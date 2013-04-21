@@ -14,31 +14,6 @@
 #= require d3
 #= require_tree .
 
-class Wrapper
-  constructor: (@object)->
-    @label = $.type(@object)
-    @id = Math.random()
-
-  parents: ->
-    # 
-
-  values: ->
-    values = []
-    for key, value of @object
-      if $.type(value) != "object" && $.type(value) != "array"
-        values.push
-          label: key
-          value: value
-    values
-
-d3.selection.enter::bareAppend = d3.selection::bareAppend = d3.selection::append
-d3.selection.enter::append = d3.selection::append = (selector)->
-  [name, className] = selector.split(".")
-
-  s = @bareAppend(name)
-  s.attr("class", className) if className
-  s
-
 $ ->
   window.JSBox =
     wrappers: new Dict()
