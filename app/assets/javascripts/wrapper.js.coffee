@@ -3,9 +3,6 @@ class window.Wrapper
     @label = $.type(@object)
     @id = Math.random()
 
-  parents: ->
-    # 
-
   values: ->
     values = []
     for key, value of @object
