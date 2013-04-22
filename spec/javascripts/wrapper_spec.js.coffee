@@ -77,3 +77,9 @@ describe "Wrapper", ->
       expect(associations[0].wrapper.object).toEqual main.object
       expect(associations[1].label).toEqual "array"
       expect(associations[1].wrapper.object).toEqual main.array
+
+  it "does not collect basic values", ->
+    for value in [1, false, null, undefined, "text"]
+      wrapper = new Wrapper({key: value})
+
+      expect(wrapper.associations.length).toEqual 0
