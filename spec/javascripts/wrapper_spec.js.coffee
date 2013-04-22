@@ -1,4 +1,5 @@
 #= require wrapper
+#= require jsbox
 
 describe "Wrapper", ->
   describe "constructor", ->
@@ -54,3 +55,25 @@ describe "Wrapper", ->
     it "does not collect objects or arrays", ->
       wrapper = new Wrapper({obj: {}, array: []})
       expect(wrapper.values().length).toEqual 0
+
+  describe "associations()", ->
+    it "returns an empty array when there are no associations", ->
+      wrapper = new Wrapper({})
+
+      expect(wrapper.associations().length).toEqual 0
+      expect($.type(wrapper.associations())).toEqual "array"
+
+    it "returns an aray of objects describing the associations", ->
+      main =
+        object: {}
+        array: []
+
+      JSBox.buildWrappersTree main
+
+      wrapper = new Wrapper(main)
+      associations = wrapper.associations()
+
+      expect(associations[0].label).toEqual "object"
+      expect(associations[0].wrapper.object).toEqual main.object
+      expect(associations[1].label).toEqual "array"
+      expect(associations[1].wrapper.object).toEqual main.array
