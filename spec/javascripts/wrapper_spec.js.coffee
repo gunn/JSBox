@@ -34,4 +34,23 @@ describe "Wrapper", ->
       wrapper = new Wrapper({})
       
       expect(wrapper.values().length).toEqual 0
-      expect($.type(wrapper.values())).toEqual "array"    
+      expect($.type(wrapper.values())).toEqual "array"
+
+    it "returns an aray of objects describing the values", ->
+      wrapper = new Wrapper({age: 25, name: "Arthur"})
+      values = wrapper.values()
+
+      expect(values[0].label).toEqual "age"
+      expect(values[0].value).toEqual 25
+      expect(values[1].label).toEqual "name"
+      expect(values[1].value).toEqual "Arthur"
+
+    it "collects all types of value", ->
+      for value in [1, false, null, undefined, "text"]
+        wrapper = new Wrapper({key: value})
+
+        expect(wrapper.values()[0].value).toEqual value
+
+    it "does not collect objects or arrays", ->
+      wrapper = new Wrapper({obj: {}, array: []})
+      expect(wrapper.values().length).toEqual 0
