@@ -18,5 +18,5 @@ $ ->
   JSBox.init()
 
   setInterval ->
-    JSBox.drawObject JSBox.base
+    JSBox.draw JSBox.base
   , 300

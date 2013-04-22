@@ -40,7 +40,7 @@ window.JSBox =
         JSBox.usedObjects.push(object)
         @buildWrappersTree(object)
 
-  drawObject: (base)->
+  draw: (base)->
     JSBox.usedObjects = []
     @buildWrappersTree base
 
