@@ -44,7 +44,8 @@ window.JSBox =
     JSBox.usedObjects = []
     @buildWrappersTree {"This is the start!": base}
 
-    for object in JSBox.wrappers.keys
+    for i in [(JSBox.wrappers.keys.length-1)..0]
+      object = JSBox.wrappers.keys[i]
       if JSBox.usedObjects.indexOf(object) == -1
         JSBox.wrappers.delete object
 
