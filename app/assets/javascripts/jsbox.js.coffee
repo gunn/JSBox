@@ -42,7 +42,7 @@ window.JSBox =
 
   draw: (base)->
     JSBox.usedObjects = []
-    @buildWrappersTree base
+    @buildWrappersTree {"This is the start!": base}
 
     for object in JSBox.wrappers.keys
       if JSBox.usedObjects.indexOf(object) == -1
