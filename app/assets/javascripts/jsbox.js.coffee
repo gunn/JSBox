@@ -50,9 +50,9 @@ window.JSBox =
 
     lines.exit().remove()
 
-    selector.select("tbody.assocs")
+    selector.select("tbody.assocs td.break")
       .style display: (d)->
-        d.values().length && d.associations().length && "table-row-group" || "none"
+        d.values().length && d.associations().length && "table-cell" || "none"
 
   buildWrappersTree: (base)->
     for key, object of base

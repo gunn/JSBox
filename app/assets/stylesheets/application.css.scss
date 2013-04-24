@@ -37,6 +37,10 @@ html, body {
     border-left: 1px solid #ddd;
     border-top: 1px solid #ddd;
 
+    &.break {
+      background-color: #fff;
+    }
+
     &:first-child {
       border-left: 0;
     }
