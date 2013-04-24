@@ -12,7 +12,11 @@ window.JSBox =
 
       activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
-  init: -> @stage = d3.select("body").append("div.stage")
+  init: ->
+    @stage = d3.select("body").append("div.stage")
+    @svg = @stage.append("svg").attr
+      width: $(@stage[0]).width()
+      height: $(@stage[0]).height()-10
 
   addLines: (selector)->
     lines = selector.select("tbody.attrs").selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.label, d.value])
