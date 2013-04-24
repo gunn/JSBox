@@ -15,7 +15,7 @@ window.JSBox =
   init: -> @stage = d3.select("body").append("div.stage")
 
   addLines: (selector)->
-    lines = selector.selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.key, d.value, d.count])
+    lines = selector.select("tbody.attrs").selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.label, d.value])
 
     linesAppend = lines.enter().append("tr.line")
 
@@ -29,6 +29,26 @@ window.JSBox =
       .text((d)-> JSON.stringify d.value )
 
     lines.exit().remove()
+
+    # Associations
+    lines = selector.select("tbody.assocs").selectAll("tr.line").data(((d)-> d.associations()), (d)-> [d.label, d.value])
+
+    linesAppend = lines.enter().append("tr.line")
+
+    linesAppend.append("td.label")
+    linesAppend.append("td.value")
+
+    lines.selectAll("td.label")
+      .text((d)-> d.label)
+
+    lines.selectAll("td.value")
+      .text((d)-> $.type d.wrapper.object )
+
+    lines.exit().remove()
+
+    selector.select("tbody.assocs")
+      .style display: (d)->
+        d.values().length && d.associations().length && "table-row-group" || "none"
 
   buildWrappersTree: (base)->
     for key, object of base
@@ -69,10 +89,14 @@ window.JSBox =
         .duration(150)
         .style("opacity", 1)
 
-    wrapsAppend.append("tbody")
 
-    wraps.select("tbody")
-      .call(@addLines)
+    wrapsAppend.append("tbody.attrs")
+    # wrapsAppend.append("tbody.assocs")
+
+    wrapsAppend.append("tbody.assocs").append("tr").append("td.break")
+      .attr colspan: 2
+
+    wraps.call(@addLines)
 
     wraps.exit()
       .attr("class", "exiting")

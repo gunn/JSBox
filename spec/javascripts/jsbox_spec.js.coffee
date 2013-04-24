@@ -22,7 +22,7 @@ describe "JSBox", ->
           pet:
             type: "cat"
         numbers: [1, 2]
-        luckNumber: 7
+        luckyNumber: 7
 
       JSBox.draw main
     
@@ -40,6 +40,12 @@ describe "JSBox", ->
         expect($(".wrapper h3:contains('object')").length).toEqual 4
         expect($(".wrapper h3:contains('array')" ).length).toEqual 2
 
+      it "puts object references in tbody.assocs", ->
+        JSBox.draw obj: {}
+
+        expect($(".wrapper tbody.assocs td:first-child").text()).toEqual "obj"
+        expect($(".wrapper tbody.assocs td:last-child").text() ).toEqual "object"
+
       it "existing objects keep positions", ->
         
     describe "removing objects", ->
@@ -55,13 +61,21 @@ describe "JSBox", ->
 
     describe "adding values", ->
       it "updates", ->
+        petWrapper = $(".wrapper td:contains('cat')").parents(".wrapper")
+
         main.friend.pet.age = 4
         JSBox.draw main
 
-        tds = $(".wrapper tbody.attrs tr:last-child td")
+        tds = petWrapper.find("tbody.attrs tr:last-child td")
 
-        expect(tds[0].text()).toEqual "age"
-        expect(tds[1].text()).toEqual "4"
+        expect($(tds[0]).text()).toEqual "age"
+        expect($(tds[1]).text()).toEqual "4"
+
+      it "puts values in tbody.attrs", ->
+        JSBox.draw number: 6
+
+        expect($(".wrapper tbody.attrs td:first-child").text()).toEqual "number"
+        expect($(".wrapper tbody.attrs td:last-child").text() ).toEqual "6"
 
     describe "updating values", ->
       it "updates", ->
@@ -74,4 +88,4 @@ describe "JSBox", ->
         delete main.friend.pet.type
         JSBox.draw main
 
-        expect($(".wrapper td:contains('cat')").length).toEqual 1
+        expect($(".wrapper td:contains('cat')").length).toEqual 0
