@@ -4,22 +4,19 @@ window.JSBox =
   usedObjects: []
 
   base:
-    start:
-      n: 8
-      friend:
-        name: "Simon"
-        age: 22
-
-      activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
+    n: 8
+    friend:
+      name: "Simon"
+      age: 22
+    activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
   init: ->
     @stage = d3.select("body").append("div.stage")
-    @svg = @stage.append("svg").attr
-      width: $(@stage[0]).width()
-      height: $(@stage[0]).height()-10
+    @svg = @stage.append("svg")
 
   addLines: (selector)->
-    lines = selector.select("tbody.attrs").selectAll("tr.line").data(((d)-> d.values()), (d)-> [d.label, d.value])
+    lines = selector.select("tbody.attrs").selectAll("tr.line")
+      .data(((d)-> d.values()), (d)-> [d.label, d.value])
 
     linesAppend = lines.enter().append("tr.line")
 
@@ -35,7 +32,8 @@ window.JSBox =
     lines.exit().remove()
 
     # Associations
-    lines = selector.select("tbody.assocs").selectAll("tr.line").data(((d)-> d.associations()), (d)-> [d.label, d.value])
+    lines = selector.select("tbody.assocs").selectAll("tr.line")
+      .data(((d)-> d.associations()), (d)-> [d.label, d.value])
 
     linesAppend = lines.enter().append("tr.line")
 
@@ -74,7 +72,8 @@ window.JSBox =
         JSBox.wrappers.delete object
 
 
-    wraps = @stage.selectAll("table.wrapper:not(.exiting)").data(JSBox.wrappers.values, (d)-> d.id)
+    wraps = @stage.selectAll("table.wrapper:not(.exiting)")
+      .data(JSBox.wrappers.values, (d)-> d.id)
 
     wrapsAppend = wraps.enter()
       .append("table.wrapper")
