@@ -14,6 +14,13 @@ window.JSBox =
     @stage = d3.select("body").append("div.stage")
     @svg = @stage.append("svg")
 
+    @cluster = d3.layout.cluster()
+      .children((d)-> d.asd())
+      .size([$(@stage[0]).width()/2, $(@stage[0]).height()/2])
+
+    @diagonal = d3.svg.diagonal()
+      #.projection (d)-> [d.y, d.x]
+
   addLines: (selector)->
     lines = selector.select("tbody.attrs").selectAll("tr.line")
       .data(((d)-> d.values()), (d)-> [d.label, d.value])
@@ -70,6 +77,35 @@ window.JSBox =
       object = JSBox.wrappers.keys[i]
       if JSBox.usedObjects.indexOf(object) == -1
         JSBox.wrappers.delete object
+
+    nodes = @cluster.nodes(JSBox.wrappers.get(base))
+
+    paths = @svg.selectAll("path")
+      .data(@cluster.links(nodes))
+    circles = @svg.selectAll("circle")
+      .data(nodes)
+
+    paths.enter().append("path")
+      .attr("d", @diagonal)
+    circles.enter().append("circle")
+      .attr
+        r: 10
+        cx: (d)->d.x
+        cy: (d)->d.y
+        fill: "#fA0"
+
+    paths.attr("d", @diagonal)
+    circles.attr
+      cx: (d)->d.x
+      cy: (d)->d.y
+
+    paths.exit().remove()
+    circles.exit().remove()
+
+
+    @stage.selectAll("table.wrapper:not(.exiting)")
+      .data(nodes)
+
 
 
     wraps = @stage.selectAll("table.wrapper:not(.exiting)")

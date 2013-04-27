@@ -20,3 +20,7 @@ class window.Wrapper
           label: key
           wrapper: JSBox.wrappers.get(assoc)
     associations
+
+  asd: ->
+    for a in @associations()
+      a.wrapper
