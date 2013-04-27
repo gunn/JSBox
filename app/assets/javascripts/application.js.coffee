@@ -20,6 +20,8 @@ $ ->
   $(window).resize ->
     JSBox.resize()
 
-  setInterval ->
+  draw = ->
+    requestAnimationFrame(draw)
     JSBox.draw JSBox.base
-  , 300
+
+  draw()
