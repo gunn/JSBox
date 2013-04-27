@@ -17,6 +17,9 @@
 $ ->
   JSBox.init()
 
+  $(window).resize ->
+    JSBox.resize()
+
   setInterval ->
     JSBox.draw JSBox.base
   , 300

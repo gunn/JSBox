@@ -16,10 +16,17 @@ window.JSBox =
 
     @cluster = d3.layout.cluster()
       .children((d)-> d.childWrappers())
-      .size([$(@stage[0]).width()/2, $(@stage[0]).height()/2])
 
     @diagonal = d3.svg.diagonal()
-      #.projection (d)-> [d.y, d.x]
+      .projection (d)-> [d.y, d.x]
+
+    @resize()
+
+  resize: ->
+    @cluster.size [
+      $(".stage").height()/2
+      $(".stage").width()/2
+    ]
 
   addLines: (selector)->
     lines = selector.select("tbody.attrs").selectAll("tr.line")
