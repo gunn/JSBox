@@ -137,7 +137,6 @@ window.JSBox =
 
 
     wrapsAppend.append("tbody.attrs")
-    # wrapsAppend.append("tbody.assocs")
 
     wrapsAppend.append("tbody.assocs").append("tr").append("td.break")
       .attr colspan: 2
