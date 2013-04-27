@@ -24,8 +24,8 @@ window.JSBox =
 
   resize: ->
     @cluster.size [
-      $(".stage").height()/2
-      $(".stage").width()/2
+      $(".stage").height()-200
+      $(".stage").width()-180
     ]
 
   addLines: (selector)->
@@ -97,14 +97,14 @@ window.JSBox =
     circles.enter().append("circle")
       .attr
         r: 10
-        cx: (d)->d.x
-        cy: (d)->d.y
+        cx: (d)->d.y
+        cy: (d)->d.x
         fill: "#fA0"
 
     paths.attr("d", @diagonal)
     circles.attr
-      cx: (d)->d.x
-      cy: (d)->d.y
+      cx: (d)->d.y
+      cy: (d)->d.x
 
     paths.exit().remove()
     circles.exit().remove()
@@ -116,13 +116,10 @@ window.JSBox =
 
 
     wraps = @stage.selectAll("table.wrapper:not(.exiting)")
-      .data(JSBox.wrappers.values, (d)-> d.id)
+      .data(nodes, (d)-> d.id)
 
     wrapsAppend = wraps.enter()
       .append("table.wrapper")
-        .style
-          left: -> Math.random()*900+"px"
-          top:  -> Math.random()*600+"px"
 
     header = wrapsAppend.append("thead").append("tr.title").append("th")
     header.attr("colspan", 2)
@@ -140,6 +137,10 @@ window.JSBox =
 
     wrapsAppend.append("tbody.assocs").append("tr").append("td.break")
       .attr colspan: 2
+
+    wraps.style
+      left: (d)-> d.y+"px"
+      top:  (d)-> d.x+"px"
 
     wraps.call(@addLines)
 
