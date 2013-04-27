@@ -15,7 +15,7 @@ window.JSBox =
     @svg = @stage.append("svg")
 
     @cluster = d3.layout.cluster()
-      .children((d)-> d.asd())
+      .children((d)-> d.childWrappers())
       .size([$(@stage[0]).width()/2, $(@stage[0]).height()/2])
 
     @diagonal = d3.svg.diagonal()

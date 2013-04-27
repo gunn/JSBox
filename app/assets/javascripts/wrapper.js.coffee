@@ -21,6 +21,6 @@ class window.Wrapper
           wrapper: JSBox.wrappers.get(assoc)
     associations
 
-  asd: ->
+  childWrappers: ->
     for a in @associations()
       a.wrapper
