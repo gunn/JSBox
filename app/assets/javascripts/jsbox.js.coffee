@@ -30,10 +30,7 @@ window.JSBox =
     ]
     @draw(@base)
 
-  addLines: (selector)->
-    lines = selector.select("tbody.attrs").selectAll("tr.line")
-      .data(((d)-> d.values()), (d)-> [d.label, d.value])
-
+  addLines: (lines, type, valueCallback)->
     linesAppend = lines.enter().append("tr.line")
 
     linesAppend.append("td.label")
@@ -43,26 +40,26 @@ window.JSBox =
       .text((d)-> d.label)
 
     lines.selectAll("td.value")
-      .text((d)-> JSON.stringify d.value )
+      .text valueCallback
 
     lines.exit().remove()
+
+  addLineGroups: (selector)=>
+    lines = selector.select("tbody.attrs").selectAll("tr.line")
+      .data(((d)-> d.values()), (d)-> [d.label, d.value])
+
+    lines.call JSBox.addLines, "attrs", (d)->
+      if $.type(d.value)=="function"
+        d.value.toString()
+      else
+        JSON.stringify d.value
 
     # Associations
     lines = selector.select("tbody.assocs").selectAll("tr.line")
       .data(((d)-> d.associations()), (d)-> [d.label, d.value])
 
-    linesAppend = lines.enter().append("tr.line")
+    lines.call JSBox.addLines, "attrs", (d)-> $.type d.wrapper.object
 
-    linesAppend.append("td.label")
-    linesAppend.append("td.value")
-
-    lines.selectAll("td.label")
-      .text((d)-> d.label)
-
-    lines.selectAll("td.value")
-      .text((d)-> $.type d.wrapper.object )
-
-    lines.exit().remove()
 
     selector.select("tbody.assocs td.break")
       .style display: (d)->
@@ -137,7 +134,7 @@ window.JSBox =
       left: (d)-> d.y+"px"
       top:  (d)-> d.x+"px"
 
-    wraps.call(@addLines)
+    wraps.call(@addLineGroups)
 
     wraps.exit()
       .attr("class", "exiting")
