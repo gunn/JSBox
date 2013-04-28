@@ -109,7 +109,7 @@ window.JSBox =
     circles.exit().remove()
 
     wraps = @stage.selectAll("table.wrapper:not(.exiting)")
-      .data nodes#, (d)-> d.id
+      .data nodes, (d)-> d.id
 
     wrapsAppend = wraps.enter()
       .append("table.wrapper")
