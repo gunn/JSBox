@@ -1,5 +1,5 @@
-window.JSBox =
-  wrappers: new Dict()
+class window.JSBox
+  @wrappers: new Dict()
   maxItems: 10
   usedObjects: []
 
@@ -10,7 +10,7 @@ window.JSBox =
       age: 22
     activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
 
-  init: ->
+  constructor: ->
     @stage = d3.select("body").append("div.stage")
     @svg = @stage.append("svg")
     @speed = 500
@@ -48,7 +48,7 @@ window.JSBox =
     lines = selector.select("tbody.attrs").selectAll("tr.line")
       .data(((d)-> d.values()), (d)-> [d.label, d.value])
 
-    lines.call JSBox.addLines, "attrs", (d)->
+    lines.call @addLines, "attrs", (d)->
       if $.type(d.value)=="function"
         d.value.toString()
       else
@@ -58,7 +58,7 @@ window.JSBox =
     lines = selector.select("tbody.assocs").selectAll("tr.line")
       .data(((d)-> d.associations()), (d)-> [d.label, d.value])
 
-    lines.call JSBox.addLines, "attrs", (d)-> $.type d.wrapper.object
+    lines.call @addLines, "attrs", (d)-> $.type d.wrapper.object
 
 
     selector.select("tbody.assocs td.break")

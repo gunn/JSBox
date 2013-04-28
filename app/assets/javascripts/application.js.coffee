@@ -15,13 +15,13 @@
 #= require_tree .
 
 $ ->
-  JSBox.init()
+  jsbox = new JSBox()
 
   $(window).resize ->
-    JSBox.resize()
+    jsbox.resize()
 
   draw = ->
     # requestAnimationFrame(draw)
-    JSBox.draw JSBox.base
+    jsbox.draw jsbox.base
 
   draw()
