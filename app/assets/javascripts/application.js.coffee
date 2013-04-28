@@ -15,13 +15,21 @@
 #= require_tree .
 
 $ ->
-  jsbox = new JSBox()
+  base =
+    n: 8
+    friend:
+      name: "Simon"
+      age: 22
+    activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
+
+  window.App = {}
+  App.jsbox = new JSBox(base)
 
   $(window).resize ->
-    jsbox.resize()
+    App.jsbox.resize()
 
   draw = ->
     # requestAnimationFrame(draw)
-    jsbox.draw jsbox.base
+    App.jsbox.draw
 
   draw()

@@ -1,25 +1,19 @@
 class window.JSBox
   @wrappers: new Dict()
-  maxItems: 10
-  usedObjects: []
 
-  base:
-    n: 8
-    friend:
-      name: "Simon"
-      age: 22
-    activities: "Skiiing Baking Running Programming Debugging Eating".split(" ")
-
-  constructor: ->
+  constructor: (@baseObject)->
     @stage = d3.select("body").append("div.stage")
     @svg = @stage.append("svg")
-    @speed = 500
 
     @cluster = d3.layout.tree()
       .children((d)-> d.childWrappers())
 
     @diagonal = d3.svg.diagonal()
       .projection (d)-> [d.y, d.x]
+
+    @speed       = 500
+    @maxItems    = 10
+    @usedObjects = []
 
     @resize()
 
@@ -67,24 +61,24 @@ class window.JSBox
 
   buildWrappersTree: (base)->
     for key, object of base
-      return if JSBox.wrappers.values.length >= JSBox.maxItems
+      return if JSBox.wrappers.values.length >= @maxItems
       if $.type(object) == "object" || $.type(object) == "array"
         if !JSBox.wrappers.has(object)
           JSBox.wrappers.set object, new Wrapper(object)
 
-        JSBox.usedObjects.push(object)
+        @usedObjects.push(object)
         @buildWrappersTree(object)
 
-  draw: (base)->
-    JSBox.usedObjects = []
-    @buildWrappersTree {"This is the start!": base}
+  draw: ()->
+    @usedObjects = []
+    @buildWrappersTree {"This is the start!": @baseObject}
 
     for i in [(JSBox.wrappers.keys.length-1)..0]
       object = JSBox.wrappers.keys[i]
-      if JSBox.usedObjects.indexOf(object) == -1
+      if @usedObjects.indexOf(object) == -1
         JSBox.wrappers.delete object
 
-    nodes = @cluster.nodes(JSBox.wrappers.get(base))
+    nodes = @cluster.nodes(JSBox.wrappers.get(@baseObject))
 
     paths = @svg.selectAll("path")
       .data(@cluster.links(nodes))
