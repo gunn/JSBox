@@ -21,7 +21,7 @@ $ ->
     JSBox.resize()
 
   draw = ->
-    requestAnimationFrame(draw)
+    # requestAnimationFrame(draw)
     JSBox.draw JSBox.base
 
   draw()

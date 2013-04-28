@@ -13,8 +13,9 @@ window.JSBox =
   init: ->
     @stage = d3.select("body").append("div.stage")
     @svg = @stage.append("svg")
+    @speed = 500
 
-    @cluster = d3.layout.cluster()
+    @cluster = d3.layout.tree()
       .children((d)-> d.childWrappers())
 
     @diagonal = d3.svg.diagonal()
@@ -27,6 +28,7 @@ window.JSBox =
       $(".stage").height()-200
       $(".stage").width()-180
     ]
+    @draw(@base)
 
   addLines: (selector)->
     lines = selector.select("tbody.attrs").selectAll("tr.line")
@@ -92,7 +94,7 @@ window.JSBox =
     circles = @svg.selectAll("circle")
       .data(nodes)
 
-    paths.enter().append("path")
+    paths.enter().append("path").transition().duration(@speed)
       .attr("d", @diagonal)
     circles.enter().append("circle")
       .attr
@@ -101,22 +103,16 @@ window.JSBox =
         cy: (d)->d.x
         fill: "#fA0"
 
-    paths.attr("d", @diagonal)
-    circles.attr
+    paths.transition().duration(@speed).attr("d", @diagonal)
+    circles.transition().duration(@speed).attr
       cx: (d)->d.y
       cy: (d)->d.x
 
     paths.exit().remove()
     circles.exit().remove()
 
-
-    @stage.selectAll("table.wrapper:not(.exiting)")
-      .data(nodes)
-
-
-
     wraps = @stage.selectAll("table.wrapper:not(.exiting)")
-      .data(nodes, (d)-> d.id)
+      .data nodes#, (d)-> d.id
 
     wrapsAppend = wraps.enter()
       .append("table.wrapper")
@@ -126,19 +122,18 @@ window.JSBox =
     header.append("h3")
       .text((d)-> d.label)
 
-    wrapsAppend
-      .style("opacity", 0)
-      .transition()
-        .duration(150)
-        .style("opacity", 1)
-
+    # wrapsAppend
+    #   .style("opacity", 0)
+    #   .transition()
+    #     .duration(150)
+    #     .style("opacity", 1)
 
     wrapsAppend.append("tbody.attrs")
 
     wrapsAppend.append("tbody.assocs").append("tr").append("td.break")
       .attr colspan: 2
 
-    wraps.style
+    wraps.transition().duration(@speed).style
       left: (d)-> d.y+"px"
       top:  (d)-> d.x+"px"
 
