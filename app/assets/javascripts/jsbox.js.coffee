@@ -11,7 +11,7 @@ class window.JSBox
     @diagonal = d3.svg.diagonal()
       .projection (d)-> [d.y, d.x]
 
-    @speed       = 500
+    @duration    = 500
     @maxItems    = 10
     @usedObjects = []
 
@@ -22,7 +22,7 @@ class window.JSBox
       $(".stage").height()-200
       $(".stage").width()-180
     ]
-    @draw(@base)
+    @draw(true)
 
   addLines: (lines, type, valueCallback)->
     linesAppend = lines.enter().append("tr.line")
@@ -69,7 +69,9 @@ class window.JSBox
         @usedObjects.push(object)
         @buildWrappersTree(object)
 
-  draw: ()->
+  draw: (instant)->
+    time = if instant then 0 else @duration
+
     @usedObjects = []
     @buildWrappersTree {"This is the start!": @baseObject}
 
@@ -85,7 +87,7 @@ class window.JSBox
     circles = @svg.selectAll("circle")
       .data(nodes)
 
-    paths.enter().append("path").transition().duration(@speed)
+    paths.enter().append("path").transition().duration(time)
       .attr("d", @diagonal)
     circles.enter().append("circle")
       .attr
@@ -94,8 +96,8 @@ class window.JSBox
         cy: (d)->d.x
         fill: "#fA0"
 
-    paths.transition().duration(@speed).attr("d", @diagonal)
-    circles.transition().duration(@speed).attr
+    paths.transition().duration(time).attr("d", @diagonal)
+    circles.transition().duration(time).attr
       cx: (d)->d.y
       cy: (d)->d.x
 
@@ -124,7 +126,7 @@ class window.JSBox
     wrapsAppend.append("tbody.assocs").append("tr").append("td.break")
       .attr colspan: 2
 
-    wraps.transition().duration(@speed).style
+    wraps.transition().duration(time).style
       left: (d)-> d.y+"px"
       top:  (d)-> d.x+"px"
 
