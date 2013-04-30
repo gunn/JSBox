@@ -3,16 +3,18 @@
 html, body {
   height: 100%;
   margin: 0;
+
+  overflow: hidden;
+  background-color: #eef;
 }
 
 .stage {
   font-family: Helvetica;
-  background-color: #eef;
 
   min-height: 100%;
 
   table {
-    position: fixed;
+    position: absolute;
     min-width: 170px;
 
     border-collapse: collapse;

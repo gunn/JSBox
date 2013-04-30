@@ -16,6 +16,7 @@ class window.JSBox
     @usedObjects = []
 
     @resize()
+    $(".stage").draggable()
 
   resize: ->
     @cluster.size [
