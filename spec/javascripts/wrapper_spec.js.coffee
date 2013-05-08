@@ -68,7 +68,7 @@ describe "Wrapper", ->
         object: {}
         array: []
 
-      JSBox.buildWrappersTree main
+      (new JSBox({})).buildWrappersTree main
 
       wrapper = new Wrapper(main)
       associations = wrapper.associations()

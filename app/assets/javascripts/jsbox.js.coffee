@@ -18,6 +18,9 @@ class window.JSBox
     @resize()
     $(".stage").draggable()
 
+  show: (@baseObject)->
+    @draw()
+
   resize: ->
     @cluster.size [
       $(".stage").height()-200

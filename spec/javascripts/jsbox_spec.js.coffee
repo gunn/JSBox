@@ -1,3 +1,5 @@
+#= require jquery
+#= require jquery-ui
 #= require d3
 #= require d3_overrides
 #= require jsbox
@@ -5,13 +7,14 @@
 #= require dict
 
 main = null
+jsbox = null
 
 describe "JSBox", ->
   describe "init", ->
     it "adds the stage", ->
       expect($(".stage").length).toEqual 0
 
-      JSBox.init()
+      jsbox = new JSBox({})
       expect($(".stage").length).toEqual 1
 
   describe "draw", ->
@@ -24,9 +27,10 @@ describe "JSBox", ->
         numbers: [1, 2]
         luckyNumber: 7
 
-      JSBox.draw main
+      jsbox.show main
     
     it "draws the tree of objects fed into it", ->
+      expect($(".stage").length).toEqual 1
       expect($(".wrapper").length).toEqual 4
       expect($(".wrapper h3:contains('object')").length).toEqual 3
       expect($(".wrapper h3:contains('array')" ).length).toEqual 1
@@ -35,13 +39,15 @@ describe "JSBox", ->
       it "updates", ->
         main.object = {}
         main.array  = []
-        JSBox.draw main
+        jsbox.show main
 
         expect($(".wrapper h3:contains('object')").length).toEqual 4
         expect($(".wrapper h3:contains('array')" ).length).toEqual 2
 
       it "puts object references in tbody.assocs", ->
-        JSBox.draw obj: {}
+
+        expect($(".stage").length).toEqual 1
+        jsbox.show obj: {}
 
         expect($(".wrapper tbody.assocs td:first-child").text()).toEqual "obj"
         expect($(".wrapper tbody.assocs td:last-child").text() ).toEqual "object"
@@ -52,7 +58,7 @@ describe "JSBox", ->
       it "updates", ->
         delete main.numbers
         main.friend.pet = null
-        JSBox.draw main
+        jsbox.show main
 
         expect($(".wrapper h3:contains('object')").length).toEqual 2
         expect($(".wrapper h3:contains('array')" ).length).toEqual 0
@@ -64,7 +70,7 @@ describe "JSBox", ->
         petWrapper = $(".wrapper td:contains('cat')").parents(".wrapper")
 
         main.friend.pet.age = 4
-        JSBox.draw main
+        jsbox.show main
 
         tds = petWrapper.find("tbody.attrs tr:last-child td")
 
@@ -72,7 +78,7 @@ describe "JSBox", ->
         expect($(tds[1]).text()).toEqual "4"
 
       it "puts values in tbody.attrs", ->
-        JSBox.draw number: 6
+        jsbox.show number: 6
 
         expect($(".wrapper tbody.attrs td:first-child").text()).toEqual "number"
         expect($(".wrapper tbody.attrs td:last-child").text() ).toEqual "6"
@@ -86,6 +92,6 @@ describe "JSBox", ->
         expect($(".wrapper td:contains('cat')").length).toEqual 1
 
         delete main.friend.pet.type
-        JSBox.draw main
+        jsbox.show main
 
         expect($(".wrapper td:contains('cat')").length).toEqual 0
