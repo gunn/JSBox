@@ -28,9 +28,3 @@ $ ->
 
   $(window).resize ->
     App.jsbox.resize()
-
-  draw = ->
-    # requestAnimationFrame(draw)
-    App.jsbox.draw
-
-  draw()
