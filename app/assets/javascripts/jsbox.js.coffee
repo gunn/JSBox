@@ -87,9 +87,9 @@ class window.JSBox
     nodes = @cluster.nodes(JSBox.wrappers.get(@baseObject))
 
     paths = @svg.selectAll("path")
-      .data(@cluster.links(nodes))
+      .data(@cluster.links(nodes), (d)-> [d.source.id, d.target.id])
     circles = @svg.selectAll("circle")
-      .data(nodes)
+      .data(nodes, (d)-> d.id)
 
     paths.enter().append("path").transition().duration(time)
       .attr("d", @diagonal)
